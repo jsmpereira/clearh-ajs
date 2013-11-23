@@ -1,4 +1,4 @@
-var api = angular.module('api', []);
+var api = angular.module('api', ['ui.bootstrap']);
 
 api.config(function($httpProvider) {
 	//Enable cross domain calls
@@ -30,7 +30,7 @@ api.controller('APIController', ['$scope', '$http',
     	});
   	}
 
-		$scope.post = function(data) {
+		$scope.create = function(data) {
 			// Angular just POSTs JSON. Need to use jQuery's $.param.
   		$http.post(this.API_ROOT, $.param({company: data}) ).success(function(result) {
     		console.log("200 OK", result)
