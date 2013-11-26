@@ -9,8 +9,17 @@
       <div class="row">
 
         <h1>Companies API</h1>
-        <div class="col-md-8">
 
+        <div class="col-md-8">
+          
+          <form class="form-horizontal pull-right">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input type="text" ng-model="filter.search" class="form-control" placeholder="Type to filter..."  />
+              </div>
+            </div>
+          </form>
+        
           <table class="table">
             <theader>
               <th>Name</th>
@@ -19,7 +28,7 @@
               <th>Country</th>
               <th>Options</th>
             <tbody>  
-              <tr ng-repeat="c in companies">
+              <tr ng-repeat="c in companies | orderBy: 'name' | filter: filter.search">
                 <td><a href="#" ng-click="show(c.id)">{{ c.name }}</a></td>
                 <td>{{ c.address }}</td>
                 <td>{{ c.city }}</td>
@@ -53,7 +62,6 @@
               <li>{{ company.country }}</li>
             </ul>
           </div>
-
           <div class="add-company">
             <h3>Add Company</h3>
             <form novalidate class="form-horizontal">
@@ -95,7 +103,7 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <button ng-click="create(new_company)" class="btn btn-default">Create</button>
+                  <button ng-click="create()" class="btn btn-default">Create</button>
                 </div>
               </div>
             </form>
@@ -104,8 +112,9 @@
     </div>
 
     <script src="js/jquery-1.10.2.js"></script>
-    <script src="http://code.angularjs.org/1.2.1/angular.min.js"></script>
+    <script src="js/angular.min.js"></script>
     <script src="js/ui-bootstrap-custom-0.6.0.min.js"></script>
     <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
   </body>
 </html>

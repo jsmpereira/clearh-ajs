@@ -11,40 +11,31 @@ api.config(function($httpProvider) {
   $httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 });
 
-api.controller('APIController', ['$scope', '$http',
-  function ($scope, $http) {
+api.controller('APIController', function ($scope, companiesService) {
 
-  	$scope.API_ROOT = 'http://limitless-tundra-1502.herokuapp.com/companies';
+    function companies () {
+      companiesService.index().then(function (data) {
+        $scope.companies = data;
+      });  
+    }
+    
+    $scope.create = function () {
+      companiesService.create($scope.new_company).then(function (data) {
+        alert("Company created.");
+        companies();
+      }, function(error){
+        console.log("Error:", error);
+        alert("Please, check your input.");
+      });
+    };
 
-  	$scope.index = function() {
-  		$http.get(this.API_ROOT).success(function(data) {
-    		console.log("200 OK", data)
-      	$scope.companies = data;
-    	});
-  	}
+    $scope.show = function(id) {
+      companiesService.show(id).then(function (data) {
+        $scope.company = data;
+      })
+    }
 
-  	$scope.show = function(id) {
-  		$http.get(this.API_ROOT+"/"+id).success(function(data) {
-    		console.log("200 OK", data)
-      	$scope.company = data;
-    	});
-  	}
-
-		$scope.create = function(data) {
-			// Angular just POSTs JSON. Need to use jQuery's $.param.
-  		$http.post(this.API_ROOT, $.param({company: data}) ).success(function(result) {
-    		console.log("200 OK", result)
-    		if (result.status == 400) {
-    			window.alert("Please, check your input.")
-    		} else {
-    			window.alert("Company Created.")
-    			$scope.index()	
-    		}
-    	});
-  	}
-
-  	angular.element(document).ready(function () {
-        $scope.index();
+    angular.element(document).ready(function () {
+      companies();
     });
-
-  }]);
+});
